@@ -2,35 +2,55 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 public class FileUtils {
     public boolean createIfNotExists(String filePath) throws IOException {
-        File file = new File(filePath);
-        return(file.createNewFile());//Создаём файл, если его нет. Возвращаем false - если он есть
+        try {
+            File file = new File(filePath);
+            //Создаём файл, если его нет. Возвращаем false - если он есть
+            return (file.createNewFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public List<String> readFile(String filePath) throws FileNotFoundException {
-        List<String> List = new ArrayList<>();
-        Scanner s = new Scanner(new File(filePath)).useDelimiter("\\s*\n\\s*");//Начинаем считывать файл. Делиметр - переход на новую строку
-        while (s.hasNext()) {
-            List.add(s.next());
+        try {
+            List<String> List = new ArrayList<>();
+            //Начинаем считывать файл. Делиметр - переход на новую строку
+            Scanner s = new Scanner(new File(filePath)).useDelimiter("\\s*\n\\s*");
+            while (s.hasNext()) {
+                List.add(s.next());
+            }
+            return List;
         }
-        return List;
+        catch(FileNotFoundException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void writeFile(String filePath, List<String> List) throws IOException {
-        if (Files.exists(Paths.get(filePath))) {//Проверяем, есть ли файл
-            FileWriter writer = new FileWriter(filePath, true);//Открываем файл для записи
-            for (String line : List) {
-                writer.write(line);
-                writer.write("\n");
+        try {
+            //Проверяем, есть ли файл
+            if (Files.exists(Paths.get(filePath))) {
+                //Открываем файл для записи
+                FileWriter writer = new FileWriter(filePath, true);
+                for (String line : List) {
+                    writer.write(line);
+                    writer.write("\n");
+                }
+                writer.close();
+            } else {
+                throw new IOException();
             }
-            writer.close();
         }
-        else{
-            throw new IOException();
+        catch(IOException e){
+            e.printStackTrace();
         }
     }
 }
