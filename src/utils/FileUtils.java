@@ -36,7 +36,7 @@ public class FileUtils {
         try {
             //Открываем файл для записи
             FileWriter writer = new FileWriter(filePath);
-            for (String line : List) {
+            for (String line : list) {
                 writer.write(line);
                 writer.write("\n");
             }
