@@ -4,8 +4,11 @@ import java.util.*;
 
 public class App {
     // Call method createIfNotExists
+
     // Call method readFile from tasks
+
     // Call method readFile from deletedTasks
+
     List<Task> tasks = new ArrayList<>();
     List<Task> deletedTasks = new ArrayList<>();
 
@@ -78,7 +81,6 @@ public class App {
                 }
                 break;
                 case 2: {
-                    userChoice = -1;
                     while (userChoice != 0) {
                         menu = new String[]{"EDIT TASK", "Existing ", "Recycle Bin", "Back"};
                         outputMenu(menu);
@@ -116,7 +118,6 @@ public class App {
                 }
                 break;
                 case 3: {
-                    userChoice =-1;
                     while (userChoice != 0) {
                         menu = new String[]{"SHOWING", "All tasks", "By filter", "Deleted", "Back"};
                         outputMenu(menu);
@@ -157,7 +158,6 @@ public class App {
                 }
                 break;
                 case 4: {
-                    userChoice =-1;
                     while (userChoice != 0) {
                         menu = new String[]{"DELETE", "By Id", "By period", "Back"};
                         outputMenu(menu);
@@ -235,7 +235,6 @@ public class App {
                 System.out.println("String cannot be Empty.Please string!\n");
                 name = sc.nextLine();
             } else {
-
                 break;
             }
         }
