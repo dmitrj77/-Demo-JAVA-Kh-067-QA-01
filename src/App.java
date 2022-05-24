@@ -3,13 +3,15 @@ import javafx.concurrent.Task;
 import java.util.*;
 
 public class App {
+    // Call method createIfNotExists
+    // Call method readFile from tasks
+    // Call method readFile from deletedTasks
+    List<Task> tasks = new ArrayList<>();
+    List<Task> deletedTasks = new ArrayList<>();
+
     static void runPrecondition() {
-        // Call method createIfNotExists
-        // Call method readFile from tasks
-        // Call method readFile from deletedTasks
-        List<Task> tasks = new ArrayList<>();
-        List<Task> deletedTasks = new ArrayList<>();
-        System.out.println("\n[Organizer] is designed to schedule and schedule user activity. " +
+
+        System.out.println("\n[Organizer] is designed to schedule of user activity. " +
                 "\nThe program allows you to create, edit, view, delete and restore tasks." +
                 "\nThe program has a console implementation." +
                 "\nTo control the application, select a number from the menu and then follow the prompts." +
@@ -21,49 +23,50 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         final String taskFile = null;
         final String deletedFile = null;
-        int userChoice;
-        String comm = "";
-        String command = "";
-        while (comm != "exit") {
-            String[] menu = new String[]{"MAIN MENU","Add task","Edit task","Show task","Delete task","Quit"};
-            getMenu(menu);
+        int userChoice=-1;
+        while (userChoice != 0) {
+            String[] menu = new String[]{"MAIN MENU", "Add task", "Edit task", "Show task", "Delete task", "Quit"};
+            outputMenu(menu);
             userChoice = getUserChoice(4);
             switch (userChoice) {
                 case 1: {
-                    command = "";
-                    while (command != "exit") {
-                        menu = new String[]{"ADD TASK","By steps","By pattern","Back"};
-                        getMenu(menu);
+                    while (userChoice != 0) {
+                        menu = new String[]{"ADD TASK", "By steps", "By pattern", "Back"};
+                        outputMenu(menu);
                         userChoice = getUserChoice(2);
                         switch (userChoice) {
                             case 1: {
-                                menu = new String[]{"BY STEPS","Continue","Cancel"};
-                                getMenu(menu);
+                                menu = new String[]{"BY STEPS", "Continue", "Cancel"};
+                                outputMenu(menu);
                                 userChoice = getUserChoice(1);
                                 if (userChoice == 1) {
                                     //Call method writeFile with 2 parameters " +
                                     // "(filePath and List<String> to write)
                                     System.out.println("Call method writeFile with 2 parameters " +
                                             "(filePath and List<String> to write)  ");
-                                } else
+                                } else{
+                                    userChoice = -1;
                                     break;
+                                }
                             }
                             break;
                             case 2: {
-                                menu = new String[]{"BY PATTERN","Continue","Cancel"};
-                                getMenu(menu);
+                                menu = new String[]{"BY PATTERN", "Continue", "Cancel"};
+                                outputMenu(menu);
                                 userChoice = getUserChoice(1);
                                 if (userChoice == 1) {
                                     //Call method writeFile with 2 parameters " +
                                     // "(filePath and List<String> to write)
                                     System.out.println("Call method writeFile with 2 parameters " +
                                             "(filePath and List<String> to write)  ");
-                                } else
+                                } else{
+                                    userChoice = -1;
                                     break;
+                                }
                             }
                             break;
                             case 0: {
-                                command = "exit";
+                                userChoice = 0;
                                 break;
                             }
                             default: {
@@ -71,30 +74,29 @@ public class App {
                             }
                             break;
                         }
-                    }
+                    }userChoice = -1;
                 }
                 break;
                 case 2: {
-                    command = "";
-                    while (command != "exit") {
-                        menu = new String[]{"EDIT TASK","Existing ","Recycle Bin","Back"};
-                        getMenu(menu);
+                    userChoice = -1;
+                    while (userChoice != 0) {
+                        menu = new String[]{"EDIT TASK", "Existing ", "Recycle Bin", "Back"};
+                        outputMenu(menu);
                         userChoice = getUserChoice(2);
                         switch (userChoice) {
                             case 1: {
                                 menu = new String[]{"EXISTING"};
-                                getMenu(menu);
+                                outputMenu(menu);
                                 //Call method readFile from List<Task> tasks = new ArrayList<>();
                                 System.out.println("Call method readFile from List<Task> " +
                                         "tasks = new ArrayList<>()");
                                 System.out.println("Call method writeFile with 2 parameters " +
                                         "(filePath and List<String> to write)  ");
-
                             }
                             break;
                             case 2: {
                                 menu = new String[]{"RECYCLE BIN"};
-                                getMenu(menu);
+                                outputMenu(menu);
                                 //Call method readFile from List<Task> deletedTasks = new ArrayList<>();
                                 System.out.println("Call method readFile from List<Task> " +
                                         "deletedTasks = new ArrayList<>();");
@@ -103,48 +105,47 @@ public class App {
                             }
                             break;
                             case 0: {
-                                command = "exit";
+                                userChoice = 0;
                             }
                             break;
                             default: {
                                 System.out.println("Please make your choice");
                             }
                         }
-                    }
+                    }userChoice = -1;
                 }
                 break;
                 case 3: {
-                    command = "";
-                    while (command != "exit") {
-                        menu = new String[]{"SHOWING","All tasks", "By filter", "Deleted", "Back"};
-                        getMenu(menu);
+                    userChoice =-1;
+                    while (userChoice != 0) {
+                        menu = new String[]{"SHOWING", "All tasks", "By filter", "Deleted", "Back"};
+                        outputMenu(menu);
                         userChoice = getUserChoice(3);
                         switch (userChoice) {
                             case 1: {
                                 menu = new String[]{"ALL TASK"};
-                                getMenu(menu);
+                                outputMenu(menu);
                                 System.out.println("Call method readFile from List<Task> " +
                                         "tasks = new ArrayList<>()");
                             }
                             break;
                             case 2: {
                                 menu = new String[]{"BY FILTER"};
-                                getMenu(menu);
+                                outputMenu(menu);
                                 System.out.println("Call method readFileByFilter from List<Task> " +
                                         "tasks = new ArrayList<>()");
                             }
                             break;
                             case 3: {
                                 menu = new String[]{"DELETE"};
-                                getMenu(menu);
+                                outputMenu(menu);
                                 //Call method readFile from List<Task> deletedTasks = new ArrayList<>();
                                 System.out.println("Call method readFile from List<Task> " +
                                         "deletedTasks = new ArrayList<>();");
                             }
                             break;
-
                             case 0: {
-                                command = "exit";
+                                userChoice = 0;
 
                             }
                             break;
@@ -152,19 +153,19 @@ public class App {
                                 System.out.println("Please make your choice");
                             }
                         }
-                    }
+                    }userChoice = -1;
                 }
                 break;
                 case 4: {
-                    command = "";
-                    while (command != "exit") {
-                        menu = new String[]{"DELETE","By Id","By period","Back"};
-                        getMenu(menu);
+                    userChoice =-1;
+                    while (userChoice != 0) {
+                        menu = new String[]{"DELETE", "By Id", "By period", "Back"};
+                        outputMenu(menu);
                         userChoice = getUserChoice(2);
                         switch (userChoice) {
                             case 1: {
                                 menu = new String[]{"BY ID"};
-                                getMenu(menu);
+                                outputMenu(menu);
                                 System.out.println("Call method readFile from List<Task> " +
                                         "tasks = new ArrayList<>()");
                                 System.out.println("Call method deletedTaskById from List<Task> " +
@@ -173,34 +174,30 @@ public class App {
                             }
                             case 2: {
                                 menu = new String[]{"BY PERIOD"};
-                                getMenu(menu);
+                                outputMenu(menu);
                                 System.out.println("Call method readFile from List<Task> " +
                                         "tasks = new ArrayList<>()");
                                 System.out.println("Call method deletedTaskByPeriod from List<Task> " +
                                         "tasks = new ArrayList<>()");
                                 break;
                             }
-
                             case 0: {
-                                command = "exit";
+                                userChoice = 0;
                                 break;
                             }
                         }
-                    }
+                    }userChoice = -1;
                 }
                 break;
-
                 default: {
                     System.out.println("Please make your choice");
                 }
                 break;
                 case 0: {
-                    comm = "exit";
+                    userChoice = 0;
                 }
                 break;
-
             }
-
         }
     }
 
@@ -246,22 +243,19 @@ public class App {
         return name;
     }
 
-    public static void getMenu(String[] menu) {
-        List<String> listBook = Arrays.asList(menu);
+    public static void outputMenu(String[] menu) {
+        List<String> listBooks = Arrays.asList(menu);
         int i = 0;
-        for (String book : listBook) {
+        for (i = 0; i < listBooks.size(); i++) {
             if (i == 0) {
-                System.out.format("%-20s %n", book);
-            } else if (i < listBook.size()-1 ) {
-                System.out.format("%-20s [" + i + "]%n", book);
-            } else if (i <listBook.size()) {
-                System.out.format("%-20s [0]%n", book);
+                System.out.format("%-20s %n", listBooks.get(0));
+            } else if (i < listBooks.size() - 1) {
+                System.out.format("%-20s [" + i + "]%n", listBooks.get(i));
+            } else if (i < listBooks.size()) {
+                System.out.format("%-20s [0]%n", listBooks.get(i));
             }
-            i++;
         }
     }
-
-
 }
 
 
