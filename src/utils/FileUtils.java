@@ -21,10 +21,10 @@ public class FileUtils {
     public static List<String> readFile(String filePath) {
         List<String> list = new ArrayList<>();
         try {
-            //Начинаем считывать файл. Делиметр - ;
-            Scanner s = new Scanner(new File(filePath)).useDelimiter("\\s*;\\s*");
+            //Начинаем считывать файл. Делиметр - переход на новую строку
+            Scanner s = new Scanner(new File(filePath));
             while (s.hasNext()) {
-                list.add(s.next());
+                list.add(s.nextLine());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -38,7 +38,7 @@ public class FileUtils {
             FileWriter writer = new FileWriter(filePath);
             for (String line : list) {
                 writer.write(line);
-                writer.write(";");
+                writer.write("\n");
             }
             writer.close();
         } catch (IOException e) {
