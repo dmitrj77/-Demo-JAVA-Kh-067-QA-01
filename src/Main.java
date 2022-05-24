@@ -7,4 +7,5 @@ public class Main {
        App.runPrecondition();
        App.run();
     }
+
 }
