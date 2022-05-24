@@ -32,7 +32,7 @@ public class FileUtils {
         return list;
     }
 
-    public static void writeFile(String filePath, List<String> List) {
+    public static void writeFile(String filePath, List<String> list) {
         try {
             //Открываем файл для записи
             FileWriter writer = new FileWriter(filePath);
