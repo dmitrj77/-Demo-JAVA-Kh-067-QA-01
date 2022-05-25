@@ -1,10 +1,8 @@
 import utils.DateUtils;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 
 public class Task extends DateUtils {
     private String title;
@@ -20,14 +18,14 @@ public class Task extends DateUtils {
     }
 
     public String getDescription() {
-        return title;
+        return description;
     }
 
     public void setDescription(String description) {
-        this.title = title;
+        this.description = description;
     }
 
-    // constrictor
+    // constructor
     public Task(String title, LocalDateTime localDateTime, String description) {
         this.title = title;
         this.localDateTime = localDateTime;
@@ -37,8 +35,9 @@ public class Task extends DateUtils {
     // constructor для получения всех 3-х параметров из одной строки
     public Task(String string) {
         String[] taskFields = string.split(";");
+        String format = "dd.MM.yyyy HH:mm";//добавить время
         this.title = taskFields[0];
-        this.localDateTime = getLocalDateTime(taskFields[1]);// метод не хочет работать не пойму в чем проблема
+        this.localDateTime = getLocalDateTime(taskFields[1], format);//метод для получения даты и Utils
         this.description = taskFields[2];
     }
 
@@ -46,5 +45,16 @@ public class Task extends DateUtils {
     public String toString() {
         return "Date:" + localDateTime + ". Title:" + title + ". Description:" + description + ".";
     }
-    //метод для записи Таска в Файл уже написан в FileUtils (writeFile) принимает Лист и его прописывает а файл
+
+    //метод для записи полей в Файл
+    public static void toStringForFile(String string) {
+        try {
+            FileWriter writer = new FileWriter("Tasks");
+            writer.write(string);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
