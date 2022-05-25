@@ -8,6 +8,8 @@ public class App {
     //Have to change <String> on <Task> when created Task class
     static List<String> tasks = new ArrayList<>();
     static List<String> deletedTasks = new ArrayList<>();
+    static final String taskFile = null;
+    static final String deletedFile = null;
 
     static void runPrecondition() {
         // Call method createIfNotExists
@@ -15,7 +17,6 @@ public class App {
         // Call method readFile from tasks
 
         // Call method readFile from deletedTasks
-
 
         System.out.println("[Organizer] is designed to schedule of user activity. " +
                 "\nThe program allows you to create, edit, view, delete and restore tasks." +
@@ -27,26 +28,24 @@ public class App {
 
     static void run() {
         Scanner scanner = new Scanner(System.in);
-        final String taskFile = null;
-        final String deletedFile = null;
         int userChoice = -1;
         while (userChoice != 0) {
             String[] mainMenu = new String[]{"MAIN MENU", "Add task", "Edit task", "Show task", "Delete task", "Quit"};
             outputMenu(mainMenu);
-            userChoice = maximumPossibleChoice(4);
+            userChoice = getUserIntChoice(4);
             switch (userChoice) {
                 //Add task menu
                 case 1: {
                     while (userChoice != 0) {
                         String[] addMenu = new String[]{"ADD TASK", "By steps", "By pattern", "Back"};
                         outputMenu(addMenu);
-                        userChoice = maximumPossibleChoice(2);
+                        userChoice = getUserIntChoice(2);
                         switch (userChoice) {
                             //Add task by steps menu
                             case 1: {
                                 String[] byStepMenu = new String[]{"BY STEPS", "Continue", "Cancel"};
                                 outputMenu(byStepMenu);
-                                userChoice = maximumPossibleChoice(1);
+                                userChoice = getUserIntChoice(1);
                                 if (userChoice == 1) {
                                     //Call method writeFile with 2 parameters " +
                                     // "(filePath and List<String> to write)
@@ -63,7 +62,7 @@ public class App {
                             case 2: {
                                 String[] byPatternMenu = new String[]{"BY PATTERN", "Continue", "Cancel"};
                                 outputMenu(byPatternMenu);
-                                userChoice = maximumPossibleChoice(1);
+                                userChoice = getUserIntChoice(1);
                                 if (userChoice == 1) {
                                     //Call method writeFile with 2 parameters " +
                                     // "(filePath and List<String> to write)
@@ -96,7 +95,7 @@ public class App {
                     while (userChoice != 0) {
                         String[] editMenu = new String[]{"EDIT TASK", "Existing ", "Recycle Bin", "Back"};
                         outputMenu(editMenu);
-                        userChoice = maximumPossibleChoice(2);
+                        userChoice = getUserIntChoice(2);
                         switch (userChoice) {
                             //Existing task menu
                             case 1: {
@@ -140,7 +139,7 @@ public class App {
                     while (userChoice != 0) {
                         String[] showingMenu = new String[]{"SHOWING", "All tasks", "By filter", "Deleted tasks", "Back"};
                         outputMenu(showingMenu);
-                        userChoice = maximumPossibleChoice(3);
+                        userChoice = getUserIntChoice(3);
                         switch (userChoice) {
                             //All tasks
                             case 1: {
@@ -187,7 +186,7 @@ public class App {
                     while (userChoice != 0) {
                         String[] deleteMenu = new String[]{"DELETE", "By Id", "By period", "Back"};
                         outputMenu(deleteMenu);
-                        userChoice = maximumPossibleChoice(2);
+                        userChoice = getUserIntChoice(2);
                         switch (userChoice) {
                             case 1: {
                                 String[] byIdMenu = new String[]{"BY ID"};
@@ -229,7 +228,7 @@ public class App {
     }
 
     // Method of validation maximum possible choice
-    public static int maximumPossibleChoice(int points) {
+    public static int getUserIntChoice(int maxChoice) {
         Scanner scanner = new Scanner(System.in);
         int userChoice = 0;
         boolean isInputNumber;
@@ -240,39 +239,38 @@ public class App {
                 scanner.next();
             } else {
                 userChoice = scanner.nextInt();
-                if (userChoice > points) {
+                if (userChoice > maxChoice) {
                     System.out.println("You entered an incorrect number");
                 } else {
                     break;
                 }
             }
         }
-        while (!isInputNumber || userChoice > points);
+        while (!isInputNumber || userChoice > maxChoice);
         return userChoice;
     }
 
     //ToDo to add method to maximumPossibleChoice
     private static String getStringNotEmpty() {
         Scanner scanner = new Scanner(System.in);
-        String name = scanner.nextLine();
+        String inputString = scanner.nextLine();
         boolean isStringEmpty;
         do {
-            isStringEmpty = name.isEmpty();
+            isStringEmpty = inputString.isEmpty();
             if (isStringEmpty) {
                 System.out.println("String cannot be Empty.Please string!\n");
-                name = scanner.nextLine();
+                inputString = scanner.nextLine();
             } else {
                 break;
             }
         }
         while (isStringEmpty);
-        return name;
+        return inputString;
     }
 
     public static void outputMenu(String[] menu) {
         List<String> listBooks = Arrays.asList(menu);
-        int i = 0;
-        for (i = 0; i < listBooks.size(); i++) {
+        for (int i = 0; i < listBooks.size(); i++) {
             if (i == 0) {
                 System.out.format("%-20s %n", listBooks.get(0));
             } else if (i < listBooks.size() - 1) {
