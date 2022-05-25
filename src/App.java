@@ -35,7 +35,7 @@ public class App {
             outputMenu(mainMenu);
             userChoice = maximumPossibleChoice(4);
             switch (userChoice) {
-                //Add task n menu
+                //Add task menu
                 case 1: {
                     while (userChoice != 0) {
                         String[] addMenu = new String[]{"ADD TASK", "By steps", "By pattern", "Back"};
@@ -283,6 +283,3 @@ public class App {
         }
     }
 }
-
-
-
