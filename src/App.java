@@ -1,3 +1,6 @@
+import utils.FileUtils;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,11 +16,12 @@ public class App {
 
     static void runPrecondition() {
         // Call method createIfNotExists
-
+        FileUtils.createIfNotExists("tasks");
+        FileUtils.createIfNotExists("deletedTasks");
         // Call method readFile from tasks
-
+        FileUtils.readFile("tasks");
         // Call method readFile from deletedTasks
-
+        FileUtils.readFile("deletedTasks");
         System.out.println("[Organizer] is designed to schedule of user activity. " +
                 "\nThe program allows you to create, edit, view, delete and restore tasks." +
                 "\nThe program has a console implementation." +
@@ -227,10 +231,9 @@ public class App {
         }
     }
 
-    // Method of validation maximum possible choice
     public static int getUserIntChoice(int maxChoice) {
         Scanner scanner = new Scanner(System.in);
-        int userChoice = 0;
+        int userChoice=-1;
         boolean isInputNumber;
         do {
             isInputNumber = scanner.hasNextInt();
@@ -238,45 +241,33 @@ public class App {
                 System.out.println("Please enter a number");
                 scanner.next();
             } else {
-                userChoice = scanner.nextInt();
-                if (userChoice > maxChoice) {
+               userChoice=scanner.nextInt();
+                if (userChoice < 0) {
+                    System.out.println("You entered an negative number");
+                } else if (userChoice >= maxChoice) {
                     System.out.println("You entered an incorrect number");
-                } else {
-                    break;
                 }
             }
-        }
-        while (!isInputNumber || userChoice > maxChoice);
+
+        } while (!isInputNumber||userChoice > maxChoice || userChoice < 0);
         return userChoice;
     }
 
-    //ToDo to add method to maximumPossibleChoice
-    private static String getStringNotEmpty() {
+
+    private static String getInputString() {
         Scanner scanner = new Scanner(System.in);
-        String inputString = scanner.nextLine();
-        boolean isStringEmpty;
-        do {
-            isStringEmpty = inputString.isEmpty();
-            if (isStringEmpty) {
-                System.out.println("String cannot be Empty.Please string!\n");
-                inputString = scanner.nextLine();
-            } else {
-                break;
-            }
-        }
-        while (isStringEmpty);
-        return inputString;
+        return scanner.nextLine();
     }
 
     public static void outputMenu(String[] menu) {
-        List<String> listBooks = Arrays.asList(menu);
-        for (int i = 0; i < listBooks.size(); i++) {
+        List<String> listMenu = Arrays.asList(menu);
+        for (int i = 0; i < listMenu.size(); i++) {
             if (i == 0) {
-                System.out.format("%-20s %n", listBooks.get(0));
-            } else if (i < listBooks.size() - 1) {
-                System.out.format("%-20s [" + i + "]%n", listBooks.get(i));
-            } else if (i < listBooks.size()) {
-                System.out.format("%-20s [0]%n", listBooks.get(i));
+                System.out.format("%-20s %n", listMenu.get(0));
+            } else if (i < listMenu.size() - 1) {
+                System.out.format("%-20s [" + i + "]%n", listMenu.get(i));
+            } else {
+                System.out.format("%-20s [0]%n", listMenu.get(i));
             }
         }
     }
