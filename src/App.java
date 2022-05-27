@@ -1,9 +1,11 @@
 import utils.FileUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.*;
+
+import static utils.DateUtils.format;
+import static utils.DateUtils.getLocalDateTime;
 
 public class App {
 
@@ -195,23 +197,65 @@ public class App {
                         String[] deleteMenu = new String[]{"DELETE", "By Id", "By period", "Back"};
                         outputMenu(deleteMenu);
                         userChoice = getUserIntChoice(2);
+                        int id = 0;
                         switch (userChoice) {
                             case 1: {
                                 String[] byIdMenu = new String[]{"BY ID"};
                                 outputMenu(byIdMenu);
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "tasks = new ArrayList<>()");
-                                System.out.println("Call method deletedTaskById from List<Task> " +
-                                        "tasks = new ArrayList<>()");
+                                showTask(tasks);
+                                System.out.println("Input ID:");
+                                try {
+                                    id = scanner.nextInt();
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Incorrect number");
+                                }
+                                if (id == 0) {
+                                    userChoice = 1;
+                                    break;
+                                } else if (id <= tasks.size()) {
+                                    deletedTasks.add(tasks.remove(id));
+                                    writeTasks(deletedFile, deletedTasks);
+                                    writeTasks(taskFile, tasks);
+                                    System.out.println("You have successfully deleted task");
+                                } else {
+                                    System.out.println("Incorrect. Try again");
+                                }
                                 break;
                             }
                             case 2: {
                                 String[] byPeriodMenu = new String[]{"BY PERIOD"};
                                 outputMenu(byPeriodMenu);
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "tasks = new ArrayList<>()");
-                                System.out.println("Call method deletedTaskByPeriod from List<Task> " +
-                                        "tasks = new ArrayList<>()");
+                                showTask(tasks);
+                                System.out.println("Input period");
+                                System.out.println("From:");
+                                String from = scanner.nextLine();
+                                if (from.equals(0)) {
+                                    userChoice = 1;
+                                    break;
+                                }
+                                System.out.println("To:");
+                                String to = scanner.nextLine();
+                                LocalDateTime dataFrom = null;
+                                if (from.equals("0") || to.equals("0")) {
+                                    userChoice = 1;
+                                    break;
+                                }
+                                LocalDateTime dataTo = null;
+                                try {
+                                    dataFrom = getLocalDateTime(from, format);
+                                    dataTo = getLocalDateTime(to, format);
+                                } catch (DateTimeParseException e) {
+                                    System.out.println("Incorrect data");
+                                    break;
+                                }
+                                for (Task task : tasks) {
+                                    if ((task.getLocalDateTime().isAfter(dataFrom)) && (task.getLocalDateTime().isBefore(dataTo))) {
+                                        deletedTasks.add(tasks.remove(tasks.indexOf(task)));
+                                        writeTasks(deletedFile, deletedTasks);
+                                        writeTasks(taskFile, tasks);
+                                    }
+                                }
+                                System.out.println("You have successfully deleted task");
                                 break;
                             }
                             case 0: {
@@ -248,7 +292,7 @@ public class App {
                 userChoice = scanner.nextInt();
                 if (userChoice < 0) {
                     System.out.println("You entered an negative number");
-                } else if (userChoice >= maxChoice) {
+                } else if (userChoice > maxChoice) {
                     System.out.println("You entered an incorrect number");
                 }
             }
@@ -257,6 +301,13 @@ public class App {
         return userChoice;
     }
 
+    private static void showTask(List<Task> tasks) {
+        int i = 0;
+        for (Task task : tasks) {
+            System.out.format("ID:%d %s\n", i, task);
+            i++;
+        }
+    }
 
     private static String getInputString() {
         Scanner scanner = new Scanner(System.in);
@@ -282,6 +333,42 @@ public class App {
             stringList.add(task.getStringForFile());
         }
         FileUtils.writeFile(filePath, stringList);
+    }
+
+    public static List<Task> deletedTaskByPeriod(List<Task> tasks, String taskFile, String deletedFile,
+                                                 String LocalDateTime) {
+        try {
+            //Список
+            List<String> stringList = new ArrayList<>();
+            //Корзина
+            List<String> archive = new ArrayList<>();
+            for (Task task : tasks) {
+                stringList.add(task.getStringForFile());
+            }
+            for (String line : stringList) {
+                if (line.contains(";" + LocalDateTime + ";")) {
+                    archive.add(line);
+                    stringList.remove(line);
+                }
+            }
+            //Обнуляем списки, потому что мы сохраняем только текущие действия
+            tasks.clear();
+            deletedTasks.clear();
+            for (String taskString : stringList) {
+                Task task = new Task(taskString);
+                tasks.add(task);
+            }
+            for (String taskString : archive) {
+                Task task = new Task(taskString);
+                deletedTasks.add(task);
+            }
+            writeTasks(deletedFile, deletedTasks);
+            writeTasks(taskFile, tasks);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+        //Передаём итоговый список на подтверждение
+        return tasks;
     }
 
 }
