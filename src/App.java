@@ -1,9 +1,15 @@
+import utils.DateUtils;
 import utils.FileUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+
+import static utils.DateUtils.format;
+import static utils.DateUtils.getLocalDateTime;
 
 public class App {
 
@@ -109,22 +115,66 @@ public class App {
                             case 1: {
                                 String[] existingMenu = new String[]{"EXISTING"};
                                 outputMenu(existingMenu);
-                                //Call method readFile from List<Task> tasks = new ArrayList<>();
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "tasks = new ArrayList<>()");
-                                System.out.println("Call method writeFile with 2 parameters " +
-                                        "(filePath and List<String> to write)  ");
+                                showTask(tasks);
+                                System.out.println("Please enter Id: ");
+                                int userChoiceId = getUserIntChoice(tasks.size() - 1);
+                                System.out.println(tasks.get(userChoiceId));
+                                String[] editTask = new String[]{"EDIT TASK", "Title ", "Date", "Description", "Back"};
+                                outputMenu(editTask);
+                                userChoice = getUserIntChoice(3);
+                                if (userChoice == 1) {
+                                    System.out.println("Please enter new Title: ");
+                                    String newTitle = scanner.nextLine();
+                                    tasks.get(userChoiceId).setTitle(newTitle);
+                                    System.out.format("You have successfully changed Title: %s\n", tasks.get(userChoiceId)
+                                            .getTitle());
+                                } else if (userChoice == 2) {
+                                    System.out.println("Please enter new Date in format 'dd.MM.yyyy HH:mm': ");
+                                    String newDate = scanner.nextLine();
+                                    LocalDateTime Date;
+                                    try {
+                                        Date = getLocalDateTime(newDate, format);
+                                    } catch (DateTimeParseException e) {
+                                        System.out.println("Incorrect format of data");
+                                        break;
+                                    }
+                                    tasks.get(userChoiceId).setLocalDateTime(Date);
+                                    System.out.format("You have successfully changed Date: %s\n", tasks.get(userChoiceId)
+                                            .getLocalDateTime());
+                                } else if (userChoice == 3) {
+                                    System.out.println("Please enter new Description: ");
+                                    String newDescription = scanner.nextLine();
+                                    tasks.get(userChoiceId).setDescription(newDescription);
+                                    System.out.format("You have successfully changed Description: %s\n", tasks.
+                                            get(userChoiceId).getDescription());
+                                } else {
+                                    userChoice = -1;
+                                    break;
+                                }
                                 break;
                             }
                             //Recycle bin menu
                             case 2: {
                                 String[] binMenu = new String[]{"RECYCLE BIN"};
                                 outputMenu(binMenu);
-                                //Call method readFile from List<Task> deletedTasks = new ArrayList<>();
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "deletedTasks = new ArrayList<>();");
-                                System.out.println("Call method writeFile with 2 parameters " +
-                                        "(filePath and List<String> to write)  ");
+                                showTask(deletedTasks);
+                                System.out.println("Please enter Id: ");
+                                int userChoiceId = getUserIntChoice(deletedTasks.size()-1);
+                                System.out.println(deletedTasks.get(userChoiceId));
+                                System.out.println("Please enter new Date in format 'dd.MM.yyyy HH:mm': ");
+                                String newDate = scanner.nextLine();
+                                LocalDateTime Date;
+                                try {
+                                    Date = getLocalDateTime(newDate, format);
+                                } catch (DateTimeParseException e) {
+                                    System.out.println("Incorrect format of data");
+                                    break;
+                                }
+                                tasks.get(userChoiceId).setLocalDateTime(Date);
+                                System.out.println(deletedTasks.get(userChoiceId).getLocalDateTime());
+                                tasks.add(deletedTasks.remove(userChoiceId));
+                                writeTasks(deletedFile, deletedTasks);
+                                writeTasks(taskFile, tasks);
                                 break;
                             }
                             //Back menu
@@ -282,6 +332,15 @@ public class App {
             stringList.add(task.getStringForFile());
         }
         FileUtils.writeFile(filePath, stringList);
+    }
+
+    // method for show all tasks in console
+    private static void showTask(List<Task> tasks) {
+        for(int i =0;i< tasks.size();i++){
+            System.out.format("%d %s %s %s\n", i, tasks.get(i).getTitle(),tasks.get(i).getLocalDateTime(),
+                    tasks.get(i).getDescription());
+        }
+
     }
 
 }
