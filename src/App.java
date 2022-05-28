@@ -326,40 +326,4 @@ public class App {
         FileUtils.writeFile(filePath, stringList);
     }
 
-    public static List<Task> deletedTaskByPeriod(List<Task> tasks, String taskFile, String deletedFile,
-                                                 String LocalDateTime) {
-        try {
-            //Список
-            List<String> stringList = new ArrayList<>();
-            //Корзина
-            List<String> archive = new ArrayList<>();
-            for (Task task : tasks) {
-                stringList.add(task.getStringForFile());
-            }
-            for (String line : stringList) {
-                if (line.contains(";" + LocalDateTime + ";")) {
-                    archive.add(line);
-                    stringList.remove(line);
-                }
-            }
-            //Обнуляем списки, потому что мы сохраняем только текущие действия
-            tasks.clear();
-            deletedTasks.clear();
-            for (String taskString : stringList) {
-                Task task = new Task(taskString);
-                tasks.add(task);
-            }
-            for (String taskString : archive) {
-                Task task = new Task(taskString);
-                deletedTasks.add(task);
-            }
-            writeTasks(deletedFile, deletedTasks);
-            writeTasks(taskFile, tasks);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
-        }
-        //Передаём итоговый список на подтверждение
-        return tasks;
-    }
-
 }
