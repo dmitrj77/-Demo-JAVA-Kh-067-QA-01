@@ -1,9 +1,13 @@
 import utils.FileUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+
+import static utils.DateUtils.format;
+import static utils.DateUtils.getLocalDateTime;
 
 public class App {
 
@@ -118,7 +122,7 @@ public class App {
                             }
                             //Recycle bin menu
                             case 2: {
-                                String[] binMenu = new String[]{"RECYCLE BIN"};
+                                String[] binMenu = new String[]{"RECYCLE BIN", "Back"};
                                 outputMenu(binMenu);
                                 //Call method readFile from List<Task> deletedTasks = new ArrayList<>();
                                 System.out.println("Call method readFile from List<Task> " +
@@ -145,34 +149,45 @@ public class App {
                 //Showing tasks
                 case 3: {
                     while (userChoice != 0) {
-                        String[] showingMenu = new String[]{"SHOWING", "All tasks", "By filter", "Deleted tasks", "Back"};
+                        String[] showingMenu = new String[]{"SHOWING","All tasks","By filter","Deleted tasks","Back"};
                         outputMenu(showingMenu);
                         userChoice = getUserIntChoice(3);
                         switch (userChoice) {
                             //All tasks
                             case 1: {
-                                String[] allMenu = new String[]{"ALL TASK"};
+                                String[] allMenu = new String[]{"ALL TASK","Back"};
                                 outputMenu(allMenu);
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "tasks = new ArrayList<>()");
+                                showTask(tasks);
+                                userChoice = getUserIntChoice(0);
                                 break;
                             }
-
                             //By filter
                             case 2: {
-                                String[] byFilterMenu = new String[]{"BY FILTER"};
+                                String[] byFilterMenu = new String[]{"BY FILTER","Back"};
                                 outputMenu(byFilterMenu);
-                                System.out.println("Call method readFileByFilter from List<Task> " +
-                                        "tasks = new ArrayList<>()");
+
+                                List<Task> temp = new ArrayList<>();
+                                System.out.println("Enter please data from period in format:" + format);
+                                LocalDateTime dataFrom = getLocalDateTime(scanner.nextLine(), format);
+                                System.out.println("Enter please data to period in format:" + format);
+                                LocalDateTime dataTo = getLocalDateTime(scanner.nextLine(), format);
+
+                                for (Task task : tasks) {
+                                    if ((task.getLocalDateTime().isAfter(dataFrom)) &&
+                                            (task.getLocalDateTime().isBefore(dataTo))) {
+                                        temp.add(task);
+                                    }
+                                }
+                                showTask(temp);
+                                userChoice = getUserIntChoice(0);
                                 break;
                             }
                             //Deleted tasks
                             case 3: {
-                                String[] deletedMenu = new String[]{"DELETED TACKS"};
+                                String[] deletedMenu = new String[]{"DELETED TACKS", "Back"};
                                 outputMenu(deletedMenu);
-                                //Call method readFile from List<Task> deletedTasks = new ArrayList<>();
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "deletedTasks = new ArrayList<>();");
+                                showTask(deletedTasks);
+                                userChoice = getUserIntChoice(0);
                                 break;
                             }
                             //Back from showing
@@ -248,7 +263,7 @@ public class App {
                 userChoice = scanner.nextInt();
                 if (userChoice < 0) {
                     System.out.println("You entered an negative number");
-                } else if (userChoice >= maxChoice) {
+                } else if (userChoice > maxChoice) {
                     System.out.println("You entered an incorrect number");
                 }
             }
@@ -257,6 +272,13 @@ public class App {
         return userChoice;
     }
 
+    private static void showTask(List<Task> tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.format("%d %s %s %s\n", i, tasks.get(i).getTitle(), tasks.get(i).getLocalDateTime(),
+                    tasks.get(i).getDescription());
+        }
+
+    }
 
     private static String getInputString() {
         Scanner scanner = new Scanner(System.in);
