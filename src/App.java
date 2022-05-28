@@ -1,9 +1,14 @@
 import utils.FileUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+
+import static utils.DateUtils.format;
+import static utils.DateUtils.getLocalDateTime;
 
 public class App {
 
@@ -206,30 +211,28 @@ public class App {
                                 writeTasks(deletedFile, deletedTasks);
                                 writeTasks(taskFile, tasks);
                                 System.out.println("You have successfully deleted task");
-                                System.out.println("Press [0] to get in Menu");
-                                userChoice = getUserIntChoice(2);
+                                System.out.println("Press [0] to get in MAIN MENU");
+                                System.out.println("Press [1] to get in DELETE MENU");
+                                userChoice = getUserIntChoice(1);
                                 break;
                             }
                             case 2: {
-                                /*String[] byPeriodMenu = new String[]{"BY PERIOD"};
+                                String[] byPeriodMenu = new String[]{"BY PERIOD", "Back"};
                                 outputMenu(byPeriodMenu);
                                 showTask(tasks);
                                 System.out.println("Input period");
+                                System.out.println("Format of data dd.MM.yyyy HH:mm");
                                 System.out.println("From:");
                                 String from = scanner.nextLine();
                                 System.out.println("To:");
                                 String to = scanner.nextLine();
-                                if (from.equals("0") || to.equals("0")) {
-                                    userChoice = 1;
-                                    break;
-                                }
-                                LocalDateTime dataFrom = null;
-                                LocalDateTime dataTo = null;
+                                LocalDateTime dataFrom;
+                                LocalDateTime dataTo;
                                 try {
                                     dataFrom = getLocalDateTime(from, format);
                                     dataTo = getLocalDateTime(to, format);
                                 } catch (DateTimeParseException e) {
-                                    System.out.println("Incorrect data");
+                                    System.out.println("Incorrect format of data");
                                     break;
                                 }
                                 for (int i = 0; i < tasks.size(); i++) {
@@ -240,8 +243,11 @@ public class App {
                                         writeTasks(taskFile, tasks);
                                     }
                                 }
-                                System.out.println("You have successfully deleted task");
-                                break;*/
+                                System.out.println("You have successfully deleted tasks");
+                                System.out.println("Press [0] to get in MAIN MENU");
+                                System.out.println("Press [1] to get in DELETE MENU");
+                                userChoice = getUserIntChoice(1);
+                                break;
                             }
                             case 0: {
                                 userChoice = 0;
@@ -287,11 +293,11 @@ public class App {
     }
 
     private static void showTask(List<Task> tasks) {
-        int i = 0;
-        for (Task task : tasks) {
-            System.out.format("ID:%d %s\n", i, task);
-            i++;
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.format("%d %s %s %s\n", i, tasks.get(i).getTitle(), tasks.get(i).getLocalDateTime(),
+                    tasks.get(i).getDescription());
         }
+
     }
 
     private static String getInputString() {
