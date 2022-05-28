@@ -1,11 +1,9 @@
 import utils.FileUtils;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.*;
-
-import static utils.DateUtils.format;
-import static utils.DateUtils.getLocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 public class App {
 
@@ -197,49 +195,35 @@ public class App {
                         String[] deleteMenu = new String[]{"DELETE", "By Id", "By period", "Back"};
                         outputMenu(deleteMenu);
                         userChoice = getUserIntChoice(2);
-                        int id = 0;
                         switch (userChoice) {
                             case 1: {
-                                String[] byIdMenu = new String[]{"BY ID"};
+                                String[] byIdMenu = new String[]{"BY ID", "Back"};
                                 outputMenu(byIdMenu);
                                 showTask(tasks);
                                 System.out.println("Input ID:");
-                                try {
-                                    id = scanner.nextInt();
-                                } catch (InputMismatchException e) {
-                                    System.out.println("Incorrect number");
-                                }
-                                if (id == 0) {
-                                    userChoice = 1;
-                                    break;
-                                } else if (id <= tasks.size()) {
-                                    deletedTasks.add(tasks.remove(id));
-                                    writeTasks(deletedFile, deletedTasks);
-                                    writeTasks(taskFile, tasks);
-                                    System.out.println("You have successfully deleted task");
-                                } else {
-                                    System.out.println("Incorrect. Try again");
-                                }
+                                int id = getUserIntChoice(tasks.size() - 1);
+                                deletedTasks.add(tasks.remove(id));
+                                writeTasks(deletedFile, deletedTasks);
+                                writeTasks(taskFile, tasks);
+                                System.out.println("You have successfully deleted task");
+                                System.out.println("Press [0] to get in Menu");
+                                userChoice = getUserIntChoice(2);
                                 break;
                             }
                             case 2: {
-                                String[] byPeriodMenu = new String[]{"BY PERIOD"};
+                                /*String[] byPeriodMenu = new String[]{"BY PERIOD"};
                                 outputMenu(byPeriodMenu);
                                 showTask(tasks);
                                 System.out.println("Input period");
                                 System.out.println("From:");
                                 String from = scanner.nextLine();
-                                if (from.equals(0)) {
-                                    userChoice = 1;
-                                    break;
-                                }
                                 System.out.println("To:");
                                 String to = scanner.nextLine();
-                                LocalDateTime dataFrom = null;
                                 if (from.equals("0") || to.equals("0")) {
                                     userChoice = 1;
                                     break;
                                 }
+                                LocalDateTime dataFrom = null;
                                 LocalDateTime dataTo = null;
                                 try {
                                     dataFrom = getLocalDateTime(from, format);
@@ -248,15 +232,16 @@ public class App {
                                     System.out.println("Incorrect data");
                                     break;
                                 }
-                                for (Task task : tasks) {
-                                    if ((task.getLocalDateTime().isAfter(dataFrom)) && (task.getLocalDateTime().isBefore(dataTo))) {
-                                        deletedTasks.add(tasks.remove(tasks.indexOf(task)));
+                                for (int i = 0; i < tasks.size(); i++) {
+                                    if ((tasks.get(i).getLocalDateTime().isAfter(dataFrom)) &&
+                                            (tasks.get(i).getLocalDateTime().isBefore(dataTo))) {
+                                        deletedTasks.add(tasks.remove(tasks.indexOf(tasks.get(i))));
                                         writeTasks(deletedFile, deletedTasks);
                                         writeTasks(taskFile, tasks);
                                     }
                                 }
                                 System.out.println("You have successfully deleted task");
-                                break;
+                                break;*/
                             }
                             case 0: {
                                 userChoice = 0;
