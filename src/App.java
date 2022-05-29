@@ -32,12 +32,11 @@ public class App {
             Task task = new Task(taskString);
             deletedTasks.add(task);
         }
-        System.out.println("[Organizer] is designed to schedule of user activity. " +
-                "\nThe program allows you to create, edit, view, delete and restore tasks." +
-                "\nThe program has a console implementation." +
-                "\nTo control the application, select a number from the menu and then follow the prompts." +
-                "\nThe program was created by the team KH-JAVA-067-QA-01." +
-                "\nThe team is the copyright holder of this program.");
+        System.out.println("[Organizer] is designed to schedule user's activity. " +
+                "It was created by KH-JAVA-067-QA-01 team." +
+                "\nIt has a console implementation and allows you to create, edit, view, delete and restore tasks." +
+                "\nTo use the application please choose a number from the menu and follow the prompts." +
+                "\nEnjoy :)");
     }
 
     static void run() {
