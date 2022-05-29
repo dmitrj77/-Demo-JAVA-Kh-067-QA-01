@@ -113,64 +113,62 @@ public class App {
                         switch (userChoice) {
                             //Existing task menu
                             case 1: {
-                                String[] existingMenu = new String[]{"EXISTING"};
-                                outputMenu(existingMenu);
-                                showTask(tasks);
+                                for (int i = 0; i < tasks.size(); i++) {
+                                    System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
+                                }
                                 System.out.println("Please enter Id: ");
                                 int userChoiceId = getUserIntChoice(tasks.size() - 1);
-                                System.out.println(tasks.get(userChoiceId));
-                                String[] editTask = new String[]{"EDIT TASK", "Title ", "Date", "Description", "Back"};
-                                outputMenu(editTask);
-                                userChoice = getUserIntChoice(3);
-                                if (userChoice == 1) {
-                                    System.out.println("Please enter new Title: ");
-                                    String newTitle = scanner.nextLine();
-                                    tasks.get(userChoiceId).setTitle(newTitle);
-                                    System.out.format("You have successfully changed Title: %s\n", tasks.get(userChoiceId)
-                                            .getTitle());
-                                } else if (userChoice == 2) {
-                                    System.out.println("Please enter new Date in format 'dd.MM.yyyy HH:mm': ");
-                                    String newDate = scanner.nextLine();
-                                    LocalDateTime Date;
-                                    try {
-                                        Date = getLocalDateTime(newDate, format);
-                                    } catch (DateTimeParseException e) {
-                                        System.out.println("Incorrect format of data");
-                                        break;
+                                while (userChoice != -1) {
+                                    System.out.println(tasks.get(userChoiceId));
+                                    String[] editTask = new String[]{"EXISTING", "Title ", "Date", "Description", "Back"};
+                                    outputMenu(editTask);
+                                    userChoice = getUserIntChoice(3);
+                                    switch (userChoice) {
+                                        case 1: {
+                                            System.out.println("Please enter new Title: ");
+                                            String newTitle = getInputString();
+                                            tasks.get(userChoiceId).setTitle(newTitle);
+                                            System.out.format("You have successfully changed Title: %s\n", tasks.get(userChoiceId)
+                                                    .getTitle());
+                                            break;
+                                        }
+                                        case 2: {
+                                            System.out.println("Please enter new Date in format " + format);
+                                            LocalDateTime newDate = getCorrectData();
+                                            tasks.get(userChoiceId).setLocalDateTime(newDate);
+                                            System.out.format("You have successfully changed Date: %s\n", tasks.get(userChoiceId)
+                                                    .getLocalDateTime());
+                                            break;
+                                        }
+                                        case 3: {
+                                            System.out.println("Please enter new Description: ");
+                                            String newDescription = scanner.nextLine();
+                                            tasks.get(userChoiceId).setDescription(newDescription);
+                                            System.out.format("You have successfully changed Description: %s\n", tasks.
+                                                    get(userChoiceId).getDescription());
+                                            break;
+                                        }
+                                        case 0: {
+                                            userChoice = -1;
+                                            break;
+                                        }
                                     }
-                                    tasks.get(userChoiceId).setLocalDateTime(Date);
-                                    System.out.format("You have successfully changed Date: %s\n", tasks.get(userChoiceId)
-                                            .getLocalDateTime());
-                                } else if (userChoice == 3) {
-                                    System.out.println("Please enter new Description: ");
-                                    String newDescription = scanner.nextLine();
-                                    tasks.get(userChoiceId).setDescription(newDescription);
-                                    System.out.format("You have successfully changed Description: %s\n", tasks.
-                                            get(userChoiceId).getDescription());
-                                } else {
-                                    userChoice = -1;
-                                    break;
                                 }
-                                break;
                             }
+                            break;
                             //Recycle bin menu
                             case 2: {
                                 String[] binMenu = new String[]{"RECYCLE BIN"};
                                 outputMenu(binMenu);
-                                showTask(deletedTasks);
+                                for (int i = 0; i < deletedTasks.size(); i++) {
+                                    System.out.format("ID: %d %s\n", i, deletedTasks.get(i).toString());
+                                }
                                 System.out.println("Please enter Id: ");
                                 int userChoiceId = getUserIntChoice(deletedTasks.size()-1);
                                 System.out.println(deletedTasks.get(userChoiceId));
                                 System.out.println("Please enter new Date in format 'dd.MM.yyyy HH:mm': ");
-                                String newDate = scanner.nextLine();
-                                LocalDateTime Date;
-                                try {
-                                    Date = getLocalDateTime(newDate, format);
-                                } catch (DateTimeParseException e) {
-                                    System.out.println("Incorrect format of data");
-                                    break;
-                                }
-                                tasks.get(userChoiceId).setLocalDateTime(Date);
+                                LocalDateTime newDate = getCorrectData();
+                                deletedTasks.get(userChoiceId).setLocalDateTime(newDate);
                                 System.out.println(deletedTasks.get(userChoiceId).getLocalDateTime());
                                 tasks.add(deletedTasks.remove(userChoiceId));
                                 writeTasks(deletedFile, deletedTasks);
@@ -182,15 +180,15 @@ public class App {
                                 userChoice = 0;
                                 break;
                             }
-
-                            default: {
-                                System.out.println("Please make your choice");
-                            }
                         }
                     }
                     userChoice = -1;
                     break;
                 }
+
+
+
+
 
                 //Showing tasks
                 case 3: {
@@ -298,7 +296,7 @@ public class App {
                 userChoice = scanner.nextInt();
                 if (userChoice < 0) {
                     System.out.println("You entered an negative number");
-                } else if (userChoice >= maxChoice) {
+                } else if (userChoice > maxChoice) {
                     System.out.println("You entered an incorrect number");
                 }
             }
@@ -310,7 +308,17 @@ public class App {
 
     private static String getInputString() {
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        String title = scanner.nextLine();
+
+        while (true) {
+            boolean isStringEmpty = title.isEmpty();
+            if (isStringEmpty) {
+                System.out.println("Title can not be empty. Please try again");
+                title=scanner.nextLine();
+            } else {
+                return title;
+            }
+        }
     }
 
     public static void outputMenu(String[] menu) {
@@ -334,13 +342,20 @@ public class App {
         FileUtils.writeFile(filePath, stringList);
     }
 
-    // method for show all tasks in console
-    private static void showTask(List<Task> tasks) {
-        for(int i =0;i< tasks.size();i++){
-            System.out.format("%d %s %s %s\n", i, tasks.get(i).getTitle(),tasks.get(i).getLocalDateTime(),
-                    tasks.get(i).getDescription());
+    public static LocalDateTime getCorrectData() {
+        Scanner scanner = new Scanner(System.in);
+        String data = scanner.nextLine();
+        LocalDateTime localDateTime;
+        while (true) {
+            try {
+                localDateTime = getLocalDateTime(data, format);
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Incorrect format of data. Please try again. " +
+                        "Correct format " + format);
+            }
+            data = scanner.nextLine();
         }
-
+        return localDateTime;
     }
-
 }
