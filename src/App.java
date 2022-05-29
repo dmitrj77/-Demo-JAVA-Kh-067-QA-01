@@ -123,7 +123,7 @@ public class App {
                             }
                             //Recycle bin menu
                             case 2: {
-                                String[] binMenu = new String[]{"RECYCLE BIN"};
+                                String[] binMenu = new String[]{"RECYCLE BIN", "Back"};
                                 outputMenu(binMenu);
                                 //Call method readFile from List<Task> deletedTasks = new ArrayList<>();
                                 System.out.println("Call method readFile from List<Task> " +
@@ -137,7 +137,6 @@ public class App {
                                 userChoice = 0;
                                 break;
                             }
-
                             default: {
                                 System.out.println("Please make your choice");
                             }
@@ -146,7 +145,6 @@ public class App {
                     userChoice = -1;
                     break;
                 }
-
                 //Showing tasks
                 case 3: {
                     while (userChoice != 0) {
@@ -197,7 +195,7 @@ public class App {
                 //Delete menu
                 case 4: {
                     while (userChoice != 0) {
-                        String[] deleteMenu = new String[]{"DELETE", "By Id", "By period", "Back"};
+                        String[] deleteMenu = new String[]{"DELETE TASK", "By Id", "By period", "Back"};
                         outputMenu(deleteMenu);
                         userChoice = getUserIntChoice(2);
                         switch (userChoice) {
@@ -211,8 +209,8 @@ public class App {
                                 writeTasks(deletedFile, deletedTasks);
                                 writeTasks(taskFile, tasks);
                                 System.out.println("You have successfully deleted task");
-                                System.out.println("Press [0] to get in MAIN MENU");
-                                System.out.println("Press [1] to get in DELETE MENU");
+                                String[] menu = new String[]{"Choose from the menus bellow", "Menu Delete", "Main Menu"};
+                                outputMenu(menu);
                                 userChoice = getUserIntChoice(1);
                                 break;
                             }
@@ -223,29 +221,21 @@ public class App {
                                 System.out.println("Input period");
                                 System.out.println("Format of data dd.MM.yyyy HH:mm");
                                 System.out.println("From:");
-                                String from = scanner.nextLine();
+                                LocalDateTime dataFrom = getCorrectData();
                                 System.out.println("To:");
-                                String to = scanner.nextLine();
-                                LocalDateTime dataFrom;
-                                LocalDateTime dataTo;
-                                try {
-                                    dataFrom = getLocalDateTime(from, format);
-                                    dataTo = getLocalDateTime(to, format);
-                                } catch (DateTimeParseException e) {
-                                    System.out.println("Incorrect format of data");
-                                    break;
-                                }
+                                LocalDateTime dataTo = getCorrectData();
                                 for (int i = 0; i < tasks.size(); i++) {
-                                    if ((tasks.get(i).getLocalDateTime().isAfter(dataFrom)) &&
-                                            (tasks.get(i).getLocalDateTime().isBefore(dataTo))) {
-                                        deletedTasks.add(tasks.remove(tasks.indexOf(tasks.get(i))));
+                                    if((tasks.get(i).getLocalDateTime().isEqual(dataFrom))||(tasks.get(i).getLocalDateTime().isEqual(dataTo))||
+                                    ((tasks.get(i).getLocalDateTime().isAfter(dataFrom))&&(tasks.get(i).getLocalDateTime().isBefore(dataTo)))) {
+                                        deletedTasks.add(tasks.get(i));
+                                        tasks.remove(tasks.get(i));
                                         writeTasks(deletedFile, deletedTasks);
                                         writeTasks(taskFile, tasks);
                                     }
                                 }
                                 System.out.println("You have successfully deleted tasks");
-                                System.out.println("Press [0] to get in MAIN MENU");
-                                System.out.println("Press [1] to get in DELETE MENU");
+                                String[] menu = new String[]{"Choose from the menus bellow", "Menu Delete", "Main Menu"};
+                                outputMenu(menu);
                                 userChoice = getUserIntChoice(1);
                                 break;
                             }
@@ -282,9 +272,9 @@ public class App {
             } else {
                 userChoice = scanner.nextInt();
                 if (userChoice < 0) {
-                    System.out.println("You entered an negative number");
+                    System.out.println("You entered an negative number. Please try again");
                 } else if (userChoice > maxChoice) {
-                    System.out.println("You entered an incorrect number");
+                    System.out.println("You entered an incorrect number. Please try again");
                 }
             }
 
@@ -300,9 +290,21 @@ public class App {
 
     }
 
-    private static String getInputString() {
+    public static LocalDateTime getCorrectData() {
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        String data = scanner.nextLine();
+        LocalDateTime localDateTime;
+        while (true) {
+            try {
+                localDateTime = getLocalDateTime(data, format);
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Incorrect format of data. Please try again. " +
+                        "Correct format " + format);
+            }
+            data = scanner.nextLine();
+        }
+        return localDateTime;
     }
 
     public static void outputMenu(String[] menu) {
