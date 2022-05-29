@@ -1,6 +1,7 @@
 import utils.FileUtils;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -149,36 +150,43 @@ public class App {
                 //Showing tasks
                 case 3: {
                     while (userChoice != 0) {
-                        String[] showingMenu = new String[]{"SHOWING","All tasks","By filter","Deleted tasks","Back"};
+                        String[] showingMenu = new String[]{"SHOW TASK", "All tasks", "By filter", "Deleted tasks", "Back"};
                         outputMenu(showingMenu);
                         userChoice = getUserIntChoice(3);
                         switch (userChoice) {
                             //All tasks
                             case 1: {
-                                String[] allMenu = new String[]{"ALL TASK","Back"};
+                                String[] allMenu = new String[]{"ALL TASK"};
                                 outputMenu(allMenu);
-                                showTask(tasks);
+                               for(Task task: tasks){
+                                   System.out.println(task.toString());
+                               }
                                 userChoice = getUserIntChoice(0);
                                 break;
                             }
                             //By filter
                             case 2: {
-                                String[] byFilterMenu = new String[]{"BY FILTER","Back"};
+                                String[] byFilterMenu = new String[]{"BY FILTER", "Back"};
                                 outputMenu(byFilterMenu);
 
                                 List<Task> temp = new ArrayList<>();
-                                System.out.println("Enter please data from period in format:" + format);
-                                LocalDateTime dataFrom = getLocalDateTime(scanner.nextLine(), format);
-                                System.out.println("Enter please data to period in format:" + format);
-                                LocalDateTime dataTo = getLocalDateTime(scanner.nextLine(), format);
+                                System.out.println("Format of data: " + format);
+                                System.out.println("From:");
+                                LocalDateTime dataFrom = getCorrectData();
+                                System.out.println("To:");
+                                LocalDateTime dataTo = getCorrectData();
 
                                 for (Task task : tasks) {
-                                    if ((task.getLocalDateTime().isAfter(dataFrom)) &&
-                                            (task.getLocalDateTime().isBefore(dataTo))) {
+                                    if ((task.getLocalDateTime().isEqual(dataFrom))
+                                            || (task.getLocalDateTime().isEqual(dataTo))
+                                            || ((task.getLocalDateTime().isAfter(dataFrom))
+                                            && (task.getLocalDateTime().isBefore(dataTo)))) {
                                         temp.add(task);
                                     }
                                 }
-                                showTask(temp);
+                                for(Task task: temp){
+                                    System.out.println(task.toString());
+                                }
                                 userChoice = getUserIntChoice(0);
                                 break;
                             }
@@ -186,7 +194,9 @@ public class App {
                             case 3: {
                                 String[] deletedMenu = new String[]{"DELETED TACKS", "Back"};
                                 outputMenu(deletedMenu);
-                                showTask(deletedTasks);
+                                for(Task task: deletedTasks){
+                                    System.out.println(task.toString());
+                                }
                                 userChoice = getUserIntChoice(0);
                                 break;
                             }
@@ -212,21 +222,13 @@ public class App {
                         userChoice = getUserIntChoice(2);
                         switch (userChoice) {
                             case 1: {
-                                String[] byIdMenu = new String[]{"BY ID"};
-                                outputMenu(byIdMenu);
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "tasks = new ArrayList<>()");
-                                System.out.println("Call method deletedTaskById from List<Task> " +
-                                        "tasks = new ArrayList<>()");
+
                                 break;
                             }
                             case 2: {
                                 String[] byPeriodMenu = new String[]{"BY PERIOD"};
                                 outputMenu(byPeriodMenu);
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "tasks = new ArrayList<>()");
-                                System.out.println("Call method deletedTaskByPeriod from List<Task> " +
-                                        "tasks = new ArrayList<>()");
+
                                 break;
                             }
                             case 0: {
@@ -250,6 +252,24 @@ public class App {
         }
     }
 
+    public static LocalDateTime getCorrectData() {
+        Scanner scanner = new Scanner(System.in);
+        String data = scanner.nextLine();
+        LocalDateTime localDateTime;
+        while (true) {
+            try {
+                localDateTime = getLocalDateTime(data, format);
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Incorrect format of data. Please try again. " +
+                        "Correct format " + format);
+            }
+            data = scanner.nextLine();
+        }
+        return localDateTime;
+    }
+
+
     public static int getUserIntChoice(int maxChoice) {
         Scanner scanner = new Scanner(System.in);
         int userChoice = -1;
@@ -272,18 +292,20 @@ public class App {
         return userChoice;
     }
 
-    private static void showTask(List<Task> tasks) {
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.format("%d %s %s %s\n", i, tasks.get(i).getTitle(), tasks.get(i).getLocalDateTime(),
-                    tasks.get(i).getDescription());
-        }
-
-    }
-
     private static String getInputString() {
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        String title = scanner.nextLine();
+        while (true) {
+            boolean isStringEmpty = title.isEmpty();
+            if (isStringEmpty) {
+                System.out.println("Title can not be empty. Please try again");
+                title = scanner.nextLine();
+            } else {
+                return title;
+            }
+        }
     }
+
 
     public static void outputMenu(String[] menu) {
         List<String> listMenu = Arrays.asList(menu);
