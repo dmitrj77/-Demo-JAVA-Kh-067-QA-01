@@ -1,6 +1,5 @@
-package organizer;
 
-import java.io.File;
+import utils.FileUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
