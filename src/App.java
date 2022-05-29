@@ -149,13 +149,13 @@ public class App {
                 //Showing tasks
                 case 3: {
                     while (userChoice != 0) {
-                        String[] showingMenu = new String[]{"SHOW TASK", "All tasks", "By filter", "Deleted tasks", "Back"};
+                        String[] showingMenu = new String[]{"SHOW TASK", "All tasks", "By period", "Deleted tasks", "Back"};
                         outputMenu(showingMenu);
                         userChoice = getUserIntChoice(3);
                         switch (userChoice) {
                             //All tasks
                             case 1: {
-                                String[] allMenu = new String[]{"ALL TASK"};
+                                String[] allMenu = new String[]{"ALL TASKS"};
                                 outputMenu(allMenu);
                                 for (int i = 0; i < tasks.size(); i++) {
                                     System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
@@ -167,7 +167,7 @@ public class App {
                             }
                             //By filter
                             case 2: {
-                                String[] byFilterMenu = new String[]{"BY FILTER"};
+                                String[] byFilterMenu = new String[]{"BY PERIOD"};
                                 outputMenu(byFilterMenu);
 
                                 List<Task> temp = new ArrayList<>();
@@ -282,14 +282,14 @@ public class App {
         do {
             isInputNumber = scanner.hasNextInt();
             if (!isInputNumber) {
-                System.out.println("Please enter a number");
+                System.out.println("Please enter a number. Please try again");
                 scanner.next();
             } else {
                 userChoice = scanner.nextInt();
                 if (userChoice < 0) {
-                    System.out.println("You entered an negative number");
+                    System.out.println("You entered an negative number. Please try again");
                 } else if (userChoice > maxChoice) {
-                    System.out.println("You entered an incorrect number");
+                    System.out.println("You entered an incorrect number. Please try again");
                 }
             }
 
