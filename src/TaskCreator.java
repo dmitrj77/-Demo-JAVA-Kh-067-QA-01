@@ -1,5 +1,5 @@
-package organizer;
 
+import utils.DateUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -16,7 +16,7 @@ public class TaskCreator {
         LocalDateTime localDate;
         
         while(true) {
-            date = getValue("Enter date in format \"dd.MM.yyyy HH:m\" or enter 0 to cancel");
+            date = getValue("Enter date in format \"dd.MM.yyyy HH:mm\" or enter 0 to cancel");
             if (date == null)
                 return null;  
             try {
