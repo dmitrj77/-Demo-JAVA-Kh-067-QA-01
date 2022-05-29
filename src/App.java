@@ -202,7 +202,9 @@ public class App {
                             case 1: {
                                 String[] byIdMenu = new String[]{"BY ID", "Back"};
                                 outputMenu(byIdMenu);
-                                showTask(tasks);
+                                for(Task task: tasks){
+                                    System.out.println(task.toString());
+                                }
                                 System.out.println("Input ID:");
                                 int id = getUserIntChoice(tasks.size() - 1);
                                 deletedTasks.add(tasks.remove(id));
@@ -217,7 +219,9 @@ public class App {
                             case 2: {
                                 String[] byPeriodMenu = new String[]{"BY PERIOD", "Back"};
                                 outputMenu(byPeriodMenu);
-                                showTask(tasks);
+                                for(Task task: tasks){
+                                    System.out.println(task.toString());
+                                }
                                 System.out.println("Input period");
                                 System.out.println("Format of data dd.MM.yyyy HH:mm");
                                 System.out.println("From:");
@@ -280,14 +284,6 @@ public class App {
 
         } while (!isInputNumber || userChoice > maxChoice || userChoice < 0);
         return userChoice;
-    }
-
-    private static void showTask(List<Task> tasks) {
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.format("%d %s %s %s\n", i, tasks.get(i).getTitle(), tasks.get(i).getLocalDateTime(),
-                    tasks.get(i).getDescription());
-        }
-
     }
 
     public static LocalDateTime getCorrectData() {
