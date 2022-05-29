@@ -202,8 +202,8 @@ public class App {
                             case 1: {
                                 String[] byIdMenu = new String[]{"BY ID", "Back"};
                                 outputMenu(byIdMenu);
-                                for(Task task: tasks){
-                                    System.out.println(task.toString());
+                                for (int i = 0; i < tasks.size(); i++) {
+                                    System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
                                 }
                                 System.out.println("Input ID:");
                                 int id = getUserIntChoice(tasks.size() - 1);
@@ -219,8 +219,8 @@ public class App {
                             case 2: {
                                 String[] byPeriodMenu = new String[]{"BY PERIOD", "Back"};
                                 outputMenu(byPeriodMenu);
-                                for(Task task: tasks){
-                                    System.out.println(task.toString());
+                                for (int i = 0; i < tasks.size(); i++) {
+                                    System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
                                 }
                                 System.out.println("Input period");
                                 System.out.println("Format of data dd.MM.yyyy HH:mm");
