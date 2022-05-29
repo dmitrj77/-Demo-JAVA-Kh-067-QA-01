@@ -158,9 +158,9 @@ public class App {
                             case 1: {
                                 String[] allMenu = new String[]{"ALL TASK"};
                                 outputMenu(allMenu);
-                               for(Task task: tasks){
-                                   System.out.println(task.toString());
-                               }
+                                for (int i = 0; i < tasks.size(); i++) {
+                                    System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
+                                }
                                 userChoice = getUserIntChoice(0);
                                 break;
                             }
@@ -184,8 +184,8 @@ public class App {
                                         temp.add(task);
                                     }
                                 }
-                                for(Task task: temp){
-                                    System.out.println(task.toString());
+                                for (int i = 0; i < temp.size(); i++) {
+                                    System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
                                 }
                                 userChoice = getUserIntChoice(0);
                                 break;
@@ -194,8 +194,8 @@ public class App {
                             case 3: {
                                 String[] deletedMenu = new String[]{"DELETED TACKS", "Back"};
                                 outputMenu(deletedMenu);
-                                for(Task task: deletedTasks){
-                                    System.out.println(task.toString());
+                                for (int i = 0; i < deletedTasks.size(); i++) {
+                                    System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
                                 }
                                 userChoice = getUserIntChoice(0);
                                 break;
