@@ -161,12 +161,14 @@ public class App {
                                 for (int i = 0; i < tasks.size(); i++) {
                                     System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
                                 }
-                                userChoice = getUserIntChoice(0);
+                                String[] menu = new String[]{"Choose from the menus bellow", "Show Task", "Main Menu"};
+                                outputMenu(menu);
+                                userChoice = getUserIntChoice(1);
                                 break;
                             }
                             //By filter
                             case 2: {
-                                String[] byFilterMenu = new String[]{"BY FILTER", "Back"};
+                                String[] byFilterMenu = new String[]{"BY FILTER"};
                                 outputMenu(byFilterMenu);
 
                                 List<Task> temp = new ArrayList<>();
@@ -187,17 +189,21 @@ public class App {
                                 for (int i = 0; i < temp.size(); i++) {
                                     System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
                                 }
-                                userChoice = getUserIntChoice(0);
+                                String[] menu = new String[]{"Choose from the menus bellow", "Show Task", "Main Menu"};
+                                outputMenu(menu);
+                                userChoice = getUserIntChoice(1);
                                 break;
                             }
                             //Deleted tasks
                             case 3: {
-                                String[] deletedMenu = new String[]{"DELETED TACKS", "Back"};
+                                String[] deletedMenu = new String[]{"DELETED TACKS"};
                                 outputMenu(deletedMenu);
                                 for (int i = 0; i < deletedTasks.size(); i++) {
                                     System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
                                 }
-                                userChoice = getUserIntChoice(0);
+                                String[] menu = new String[]{"Choose from the menus bellow", "Show Task", "Main Menu"};
+                                outputMenu(menu);
+                                userChoice = getUserIntChoice(1);
                                 break;
                             }
                             //Back from showing
