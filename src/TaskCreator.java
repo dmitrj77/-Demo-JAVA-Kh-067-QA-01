@@ -59,11 +59,10 @@ public class TaskCreator {
     }
     
     private static boolean isStringValid(String pattern) {
-        if (pattern == null) {
-            return false;
-        }
+        
         String[] taskFields = pattern.split(";");
         if (taskFields.length < 3) {
+            System.out.println("Error! Incorrect pattern.");
             return false;
         }
         try {

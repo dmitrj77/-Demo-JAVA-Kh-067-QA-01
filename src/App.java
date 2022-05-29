@@ -1,5 +1,6 @@
-import utils.FileUtils;
+package organizer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,10 +56,12 @@ public class App {
                                 outputMenu(byStepMenu);
                                 userChoice = getUserIntChoice(1);
                                 if (userChoice == 1) {
-                                    //Call method writeFile with 2 parameters " +
-                                    // "(filePath and List<String> to write)
-                                    System.out.println("Call method writeFile with 2 parameters " +
-                                            "(filePath and List<String> to write)  ");
+                                    Task task = TaskCreator.addTaskBySteps();
+                                    if ( task != null) {
+                                        tasks.add(task);
+                                        writeTasks(taskFile, tasks);
+                                        System.out.println("Task created successfully");
+                                    }
                                 } else {
                                     userChoice = -1;
                                     break;
@@ -72,10 +75,12 @@ public class App {
                                 outputMenu(byPatternMenu);
                                 userChoice = getUserIntChoice(1);
                                 if (userChoice == 1) {
-                                    //Call method writeFile with 2 parameters " +
-                                    // "(filePath and List<String> to write)
-                                    System.out.println("Call method writeFile with 2 parameters " +
-                                            "(filePath and List<String> to write)  ");
+                                    Task task = TaskCreator.addTaskByPattern();
+                                    if (task != null) {
+                                        tasks.add(task);
+                                        writeTasks(taskFile, tasks);
+                                        System.out.println("Task created successfully");
+                                    }
                                 } else {
                                     userChoice = -1;
                                     break;
