@@ -31,7 +31,11 @@ public class App {
             Task task = new Task(taskString);
             deletedTasks.add(task);
         }
-        System.out.println("[Organizer] is designed to schedule user's activity. " + "It was created by KH-JAVA-067-QA-01 team." + "\nIt has a console implementation and allows you to create, edit, view, delete and restore tasks." + "\nTo use the application please choose a number from the menu and follow the prompts." + "\nEnjoy :)");
+        System.out.println("[Organizer] is designed to schedule user's activity. "
+                + "It was created by KH-JAVA-067-QA-01 team."
+                + "\nIt has a console implementation and allows you to create, edit, view, delete and restore tasks."
+                + "\nTo use the application please choose a number from the menu and follow the prompts."
+                + "\nEnjoy :)");
     }
 
     static void run() {
@@ -176,31 +180,54 @@ public class App {
                 //Showing tasks
                 case 3: {
                     while (userChoice != 0) {
-                        String[] showingMenu = new String[]{"SHOWING", "All tasks", "By filter", "Deleted tasks", "Back"};
+                        String[] showingMenu = new String[]{"SHOW TASK", "All tasks", "By period", "Deleted tasks", "Back"};
                         outputMenu(showingMenu);
                         userChoice = getUserIntChoice(3);
                         switch (userChoice) {
                             //All tasks
                             case 1: {
-                                String[] allMenu = new String[]{"ALL TASK"};
+                                String[] allMenu = new String[]{"ALL TASKS"};
                                 outputMenu(allMenu);
-                                System.out.println("Call method readFile from List<Task> " + "tasks = new ArrayList<>()");
+                                showTasks(tasks);
+                                String[] menu = new String[]{"Choose from the menus bellow", "Show Task", "Main Menu"};
+                                outputMenu(menu);
+                                userChoice = getUserIntChoice(1);
                                 break;
                             }
-
                             //By filter
                             case 2: {
-                                String[] byFilterMenu = new String[]{"BY FILTER"};
+                                String[] byFilterMenu = new String[]{"BY PERIOD"};
                                 outputMenu(byFilterMenu);
-                                System.out.println("Call method readFileByFilter from List<Task> " + "tasks = new ArrayList<>()");
+
+                                List<Task> temp = new ArrayList<>();
+                                System.out.println("Format of data: " + format);
+                                System.out.println("From:");
+                                LocalDateTime dataFrom = getCorrectData();
+                                System.out.println("To:");
+                                LocalDateTime dataTo = getCorrectData();
+
+                                for (Task task : tasks) {
+                                    boolean isTimeRange = task.getLocalDateTime().isEqual(dataFrom)
+                                            || task.getLocalDateTime().isEqual(dataTo)
+                                            || (task.getLocalDateTime().isAfter(dataFrom) && task.getLocalDateTime().isBefore(dataTo));
+                                    if (isTimeRange) {
+                                        temp.add(task);
+                                    }
+                                }
+                                showTasks(temp);
+                                String[] menu = new String[]{"Choose from the menus bellow", "Show Task", "Main Menu"};
+                                outputMenu(menu);
+                                userChoice = getUserIntChoice(1);
                                 break;
                             }
                             //Deleted tasks
                             case 3: {
                                 String[] deletedMenu = new String[]{"DELETED TACKS"};
                                 outputMenu(deletedMenu);
-                                //Call method readFile from List<Task> deletedTasks = new ArrayList<>();
-                                System.out.println("Call method readFile from List<Task> " + "deletedTasks = new ArrayList<>();");
+                                showTasks(deletedTasks);
+                                String[] menu = new String[]{"Choose from the menus bellow", "Show Task", "Main Menu"};
+                                outputMenu(menu);
+                                userChoice = getUserIntChoice(1);
                                 break;
                             }
                             //Back from showing
@@ -250,9 +277,9 @@ public class App {
                                 System.out.println("To:");
                                 LocalDateTime dataTo = getCorrectData();
                                 for (int i = 0; i < tasks.size(); i++) {
-                                    if((tasks.get(i).getLocalDateTime().isEqual(dataFrom))||
-                                            (tasks.get(i).getLocalDateTime().isEqual(dataTo))||
-                                            ((tasks.get(i).getLocalDateTime().isAfter(dataFrom))&&(tasks.get(i).getLocalDateTime().isBefore(dataTo)))) {
+                                    if ((tasks.get(i).getLocalDateTime().isEqual(dataFrom)) ||
+                                            (tasks.get(i).getLocalDateTime().isEqual(dataTo)) ||
+                                            ((tasks.get(i).getLocalDateTime().isAfter(dataFrom)) && (tasks.get(i).getLocalDateTime().isBefore(dataTo)))) {
                                         deletedTasks.add(tasks.get(i));
                                         tasks.remove(tasks.get(i));
                                         writeTasks(deletedFile, deletedTasks);
@@ -311,17 +338,7 @@ public class App {
 
     private static String getInputString() {
         Scanner scanner = new Scanner(System.in);
-        String title = scanner.nextLine();
-
-        while (true) {
-            boolean isStringEmpty = title.isEmpty();
-            if (isStringEmpty) {
-                System.out.println("Title can not be empty. Please try again");
-                title = scanner.nextLine();
-            } else {
-                return title;
-            }
-        }
+        return scanner.nextLine();
     }
 
     public static void outputMenu(String[] menu) {
