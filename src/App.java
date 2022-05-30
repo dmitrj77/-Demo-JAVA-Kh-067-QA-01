@@ -55,32 +55,30 @@ public class App {
                         switch (userChoice) {
                             //Add task by steps menu
                             case 1: {
-                                String[] byStepMenu = new String[]{"BY STEPS", "Continue", "Cancel"};
-                                outputMenu(byStepMenu);
-                                userChoice = getUserIntChoice(1);
-                                if (userChoice == 1) {
-                                    //Call method writeFile with 2 parameters " +
-                                    // "(filePath and List<String> to write)
-                                    System.out.println("Call method writeFile with 2 parameters " + "(filePath and List<String> to write)  ");
-                                } else {
-                                    userChoice = -1;
-                                    break;
+                                Task task = TaskCreator.addTaskBySteps();
+                                if (task != null) {
+                                    tasks.add(task);
+                                    writeTasks(taskFile, tasks);
+                                    System.out.println("Task created successfully");
+                                    System.out.println(tasks.get(tasks.size() - 1).toString());
+                                    String[] byStepMenu = new String[]{"Choose from the menus bellow", "Add task", "Main Menu"};
+                                    outputMenu(byStepMenu);
+                                    userChoice = getUserIntChoice(1);
                                 }
                                 break;
                             }
 
                             //Add task by pattern
                             case 2: {
-                                String[] byPatternMenu = new String[]{"BY PATTERN", "Continue", "Cancel"};
-                                outputMenu(byPatternMenu);
-                                userChoice = getUserIntChoice(1);
-                                if (userChoice == 1) {
-                                    //Call method writeFile with 2 parameters " +
-                                    // "(filePath and List<String> to write)
-                                    System.out.println("Call method writeFile with 2 parameters " + "(filePath and List<String> to write)  ");
-                                } else {
-                                    userChoice = -1;
-                                    break;
+                                Task task = TaskCreator.addTaskByPattern();
+                                if (task != null) {
+                                    tasks.add(task);
+                                    writeTasks(taskFile, tasks);
+                                    System.out.println("Task created successfully");
+                                    System.out.println(tasks.get(tasks.size() - 1).toString());
+                                    String[] byStepMenu = new String[]{"Choose from the menus bellow", "Add task", "Main Menu"};
+                                    outputMenu(byStepMenu);
+                                    userChoice = getUserIntChoice(1);
                                 }
                                 break;
                             }
@@ -134,7 +132,7 @@ public class App {
                                         }
                                         case 3: {
                                             System.out.println("Please enter new Description: ");
-                                            String newDescription = scanner.nextLine();
+                                            String newDescription = getInputString();
                                             tasks.get(userChoiceId).setDescription(newDescription);
                                             System.out.format("You have successfully changed Description:\n");
                                             break;
@@ -336,9 +334,9 @@ public class App {
     }
 
 
-    private static String getInputString() {
+    public static String getInputString() {
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        return isEmptyString(scanner.nextLine());
     }
 
     public static void outputMenu(String[] menu) {
@@ -384,4 +382,16 @@ public class App {
         }
     }
 
+    private static String isEmptyString(String string) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            boolean isStringEmpty = string.isEmpty();
+            if (isStringEmpty) {
+                System.out.println("Parameter can not be empty. Please try again");
+                string = scanner.nextLine();
+            } else {
+                return string;
+            }
+        }
+    }
 }
