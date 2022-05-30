@@ -220,22 +220,49 @@ public class App {
                 //Delete menu
                 case 4: {
                     while (userChoice != 0) {
-                        String[] deleteMenu = new String[]{"DELETE", "By Id", "By period", "Back"};
+                        String[] deleteMenu = new String[]{"DELETE TASK", "By Id", "By period", "Back"};
                         outputMenu(deleteMenu);
                         userChoice = getUserIntChoice(2);
                         switch (userChoice) {
                             case 1: {
-                                String[] byIdMenu = new String[]{"BY ID"};
+                                String[] byIdMenu = new String[]{"BY ID", "Back"};
                                 outputMenu(byIdMenu);
-                                System.out.println("Call method readFile from List<Task> " + "tasks = new ArrayList<>()");
-                                System.out.println("Call method deletedTaskById from List<Task> " + "tasks = new ArrayList<>()");
+                                showTasks(tasks);
+                                System.out.println("Input ID:");
+                                int id = getUserIntChoice(tasks.size() - 1);
+                                deletedTasks.add(tasks.remove(id));
+                                writeTasks(deletedFile, deletedTasks);
+                                writeTasks(taskFile, tasks);
+                                System.out.println("You have successfully deleted task");
+                                String[] menu = new String[]{"Choose from the menus bellow", "Menu Delete", "Main Menu"};
+                                outputMenu(menu);
+                                userChoice = getUserIntChoice(1);
                                 break;
                             }
                             case 2: {
-                                String[] byPeriodMenu = new String[]{"BY PERIOD"};
+                                String[] byPeriodMenu = new String[]{"BY PERIOD", "Back"};
                                 outputMenu(byPeriodMenu);
-                                System.out.println("Call method readFile from List<Task> " + "tasks = new ArrayList<>()");
-                                System.out.println("Call method deletedTaskByPeriod from List<Task> " + "tasks = new ArrayList<>()");
+                                showTasks(tasks);
+                                System.out.println("Input period");
+                                System.out.println("Format of data: " + format);
+                                System.out.println("From:");
+                                LocalDateTime dataFrom = getCorrectData();
+                                System.out.println("To:");
+                                LocalDateTime dataTo = getCorrectData();
+                                for (int i = 0; i < tasks.size(); i++) {
+                                    if((tasks.get(i).getLocalDateTime().isEqual(dataFrom))||
+                                            (tasks.get(i).getLocalDateTime().isEqual(dataTo))||
+                                            ((tasks.get(i).getLocalDateTime().isAfter(dataFrom))&&(tasks.get(i).getLocalDateTime().isBefore(dataTo)))) {
+                                        deletedTasks.add(tasks.get(i));
+                                        tasks.remove(tasks.get(i));
+                                        writeTasks(deletedFile, deletedTasks);
+                                        writeTasks(taskFile, tasks);
+                                    }
+                                }
+                                System.out.println("You have successfully deleted tasks");
+                                String[] menu = new String[]{"Choose from the menus bellow", "Menu Delete", "Main Menu"};
+                                outputMenu(menu);
+                                userChoice = getUserIntChoice(1);
                                 break;
                             }
                             case 0: {
