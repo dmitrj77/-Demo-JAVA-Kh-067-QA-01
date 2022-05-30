@@ -1,4 +1,3 @@
-import utils.DateUtils;
 import utils.FileUtils;
 
 import java.time.LocalDateTime;
@@ -32,11 +31,7 @@ public class App {
             Task task = new Task(taskString);
             deletedTasks.add(task);
         }
-        System.out.println("[Organizer] is designed to schedule user's activity. " +
-                "It was created by KH-JAVA-067-QA-01 team." +
-                "\nIt has a console implementation and allows you to create, edit, view, delete and restore tasks." +
-                "\nTo use the application please choose a number from the menu and follow the prompts." +
-                "\nEnjoy :)");
+        System.out.println("[Organizer] is designed to schedule user's activity. " + "It was created by KH-JAVA-067-QA-01 team." + "\nIt has a console implementation and allows you to create, edit, view, delete and restore tasks." + "\nTo use the application please choose a number from the menu and follow the prompts." + "\nEnjoy :)");
     }
 
     static void run() {
@@ -62,8 +57,7 @@ public class App {
                                 if (userChoice == 1) {
                                     //Call method writeFile with 2 parameters " +
                                     // "(filePath and List<String> to write)
-                                    System.out.println("Call method writeFile with 2 parameters " +
-                                            "(filePath and List<String> to write)  ");
+                                    System.out.println("Call method writeFile with 2 parameters " + "(filePath and List<String> to write)  ");
                                 } else {
                                     userChoice = -1;
                                     break;
@@ -79,8 +73,7 @@ public class App {
                                 if (userChoice == 1) {
                                     //Call method writeFile with 2 parameters " +
                                     // "(filePath and List<String> to write)
-                                    System.out.println("Call method writeFile with 2 parameters " +
-                                            "(filePath and List<String> to write)  ");
+                                    System.out.println("Call method writeFile with 2 parameters " + "(filePath and List<String> to write)  ");
                                 } else {
                                     userChoice = -1;
                                     break;
@@ -106,15 +99,13 @@ public class App {
                 //Edit task menu
                 case 2: {
                     while (userChoice != 0) {
-                        String[] editMenu = new String[]{"EDIT TASK", "Existing ", "Recycle Bin", "Back"};
+                        String[] editMenu = new String[]{"EDIT TASK", "Existing ", "Restore task", "Back"};
                         outputMenu(editMenu);
                         userChoice = getUserIntChoice(2);
                         switch (userChoice) {
                             //Existing task menu
                             case 1: {
-                                for (int i = 0; i < tasks.size(); i++) {
-                                    System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
-                                }
+                                showTasks(tasks);
                                 System.out.println("Please enter Id: ");
                                 int userChoiceId = getUserIntChoice(tasks.size() - 1);
                                 while (userChoice != -1) {
@@ -127,24 +118,21 @@ public class App {
                                             System.out.println("Please enter new Title: ");
                                             String newTitle = getInputString();
                                             tasks.get(userChoiceId).setTitle(newTitle);
-                                            System.out.format("You have successfully changed Title: %s\n", tasks.get(userChoiceId)
-                                                    .getTitle());
+                                            System.out.format("You have successfully changed Title:\n");
                                             break;
                                         }
                                         case 2: {
                                             System.out.println("Please enter new Date in format " + format);
                                             LocalDateTime newDate = getCorrectData();
                                             tasks.get(userChoiceId).setLocalDateTime(newDate);
-                                            System.out.format("You have successfully changed Date: %s\n", tasks.get(userChoiceId)
-                                                    .getLocalDateTime());
+                                            System.out.format("You have successfully changed Date:\n");
                                             break;
                                         }
                                         case 3: {
                                             System.out.println("Please enter new Description: ");
                                             String newDescription = scanner.nextLine();
                                             tasks.get(userChoiceId).setDescription(newDescription);
-                                            System.out.format("You have successfully changed Description: %s\n", tasks.
-                                                    get(userChoiceId).getDescription());
+                                            System.out.format("You have successfully changed Description:\n");
                                             break;
                                         }
                                         case 0: {
@@ -157,21 +145,20 @@ public class App {
                             break;
                             //Recycle bin menu
                             case 2: {
-                                String[] binMenu = new String[]{"RECYCLE BIN"};
+                                String[] binMenu = new String[]{"RESTORE TASK"};
                                 outputMenu(binMenu);
-                                for (int i = 0; i < deletedTasks.size(); i++) {
-                                    System.out.format("ID: %d %s\n", i, deletedTasks.get(i).toString());
-                                }
+                                showTasks(deletedTasks);
                                 System.out.println("Please enter Id: ");
-                                int userChoiceId = getUserIntChoice(deletedTasks.size()-1);
+                                int userChoiceId = getUserIntChoice(deletedTasks.size() - 1);
                                 System.out.println(deletedTasks.get(userChoiceId));
-                                System.out.println("Please enter new Date in format 'dd.MM.yyyy HH:mm': ");
+                                System.out.println("Please enter new Date in format " + format);
                                 LocalDateTime newDate = getCorrectData();
                                 deletedTasks.get(userChoiceId).setLocalDateTime(newDate);
-                                System.out.println(deletedTasks.get(userChoiceId).getLocalDateTime());
                                 tasks.add(deletedTasks.remove(userChoiceId));
                                 writeTasks(deletedFile, deletedTasks);
                                 writeTasks(taskFile, tasks);
+                                System.out.format("You have successfully changed Date:\n");
+                                System.out.println(tasks.get(tasks.size() - 1).toString());
                                 break;
                             }
                             //Back menu
@@ -186,9 +173,6 @@ public class App {
                 }
 
 
-
-
-
                 //Showing tasks
                 case 3: {
                     while (userChoice != 0) {
@@ -200,8 +184,7 @@ public class App {
                             case 1: {
                                 String[] allMenu = new String[]{"ALL TASK"};
                                 outputMenu(allMenu);
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "tasks = new ArrayList<>()");
+                                System.out.println("Call method readFile from List<Task> " + "tasks = new ArrayList<>()");
                                 break;
                             }
 
@@ -209,8 +192,7 @@ public class App {
                             case 2: {
                                 String[] byFilterMenu = new String[]{"BY FILTER"};
                                 outputMenu(byFilterMenu);
-                                System.out.println("Call method readFileByFilter from List<Task> " +
-                                        "tasks = new ArrayList<>()");
+                                System.out.println("Call method readFileByFilter from List<Task> " + "tasks = new ArrayList<>()");
                                 break;
                             }
                             //Deleted tasks
@@ -218,8 +200,7 @@ public class App {
                                 String[] deletedMenu = new String[]{"DELETED TACKS"};
                                 outputMenu(deletedMenu);
                                 //Call method readFile from List<Task> deletedTasks = new ArrayList<>();
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "deletedTasks = new ArrayList<>();");
+                                System.out.println("Call method readFile from List<Task> " + "deletedTasks = new ArrayList<>();");
                                 break;
                             }
                             //Back from showing
@@ -246,19 +227,15 @@ public class App {
                             case 1: {
                                 String[] byIdMenu = new String[]{"BY ID"};
                                 outputMenu(byIdMenu);
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "tasks = new ArrayList<>()");
-                                System.out.println("Call method deletedTaskById from List<Task> " +
-                                        "tasks = new ArrayList<>()");
+                                System.out.println("Call method readFile from List<Task> " + "tasks = new ArrayList<>()");
+                                System.out.println("Call method deletedTaskById from List<Task> " + "tasks = new ArrayList<>()");
                                 break;
                             }
                             case 2: {
                                 String[] byPeriodMenu = new String[]{"BY PERIOD"};
                                 outputMenu(byPeriodMenu);
-                                System.out.println("Call method readFile from List<Task> " +
-                                        "tasks = new ArrayList<>()");
-                                System.out.println("Call method deletedTaskByPeriod from List<Task> " +
-                                        "tasks = new ArrayList<>()");
+                                System.out.println("Call method readFile from List<Task> " + "tasks = new ArrayList<>()");
+                                System.out.println("Call method deletedTaskByPeriod from List<Task> " + "tasks = new ArrayList<>()");
                                 break;
                             }
                             case 0: {
@@ -313,7 +290,7 @@ public class App {
             boolean isStringEmpty = title.isEmpty();
             if (isStringEmpty) {
                 System.out.println("Title can not be empty. Please try again");
-                title=scanner.nextLine();
+                title = scanner.nextLine();
             } else {
                 return title;
             }
@@ -350,11 +327,17 @@ public class App {
                 localDateTime = getLocalDateTime(data, format);
                 break;
             } catch (DateTimeParseException e) {
-                System.out.println("Incorrect format of data. Please try again. " +
-                        "Correct format " + format);
+                System.out.println("Incorrect format of data. Please try again. " + "Correct format " + format);
             }
             data = scanner.nextLine();
         }
         return localDateTime;
     }
+
+    public static void showTasks(List<Task> tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
+        }
+    }
+
 }
