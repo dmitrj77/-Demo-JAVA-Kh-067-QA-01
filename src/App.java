@@ -202,9 +202,7 @@ public class App {
                             case 1: {
                                 String[] byIdMenu = new String[]{"BY ID", "Back"};
                                 outputMenu(byIdMenu);
-                                for (int i = 0; i < tasks.size(); i++) {
-                                    System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
-                                }
+                                showTasks(tasks);
                                 System.out.println("Input ID:");
                                 int id = getUserIntChoice(tasks.size() - 1);
                                 deletedTasks.add(tasks.remove(id));
@@ -219,9 +217,7 @@ public class App {
                             case 2: {
                                 String[] byPeriodMenu = new String[]{"BY PERIOD", "Back"};
                                 outputMenu(byPeriodMenu);
-                                for (int i = 0; i < tasks.size(); i++) {
-                                    System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
-                                }
+                                showTasks(tasks);
                                 System.out.println("Input period");
                                 System.out.println("Format of data: " + format);
                                 System.out.println("From:");
@@ -229,7 +225,8 @@ public class App {
                                 System.out.println("To:");
                                 LocalDateTime dataTo = getCorrectData();
                                 for (int i = 0; i < tasks.size(); i++) {
-                                    if((tasks.get(i).getLocalDateTime().isEqual(dataFrom))||(tasks.get(i).getLocalDateTime().isEqual(dataTo))||
+                                    if((tasks.get(i).getLocalDateTime().isEqual(dataFrom))||
+                                            (tasks.get(i).getLocalDateTime().isEqual(dataTo))||
                                     ((tasks.get(i).getLocalDateTime().isAfter(dataFrom))&&(tasks.get(i).getLocalDateTime().isBefore(dataTo)))) {
                                         deletedTasks.add(tasks.get(i));
                                         tasks.remove(tasks.get(i));
@@ -324,4 +321,9 @@ public class App {
         FileUtils.writeFile(filePath, stringList);
     }
 
+    public static void showTasks(List<Task> tasks){
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
+        }
+    }
 }
