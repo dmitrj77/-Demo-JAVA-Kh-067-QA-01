@@ -48,7 +48,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("Date:%s. Title:%s. Description:%s.", localDateTime, title, description);
+        String date = DateUtils.getStringFormat(localDateTime, DateUtils.format);
+        return String.format("Title:%s. Date:%s. Description:%s.", title, date, description);
     }
 
     //метод для передачи строки для записи в файл
