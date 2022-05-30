@@ -223,7 +223,7 @@ public class App {
                                     System.out.format("ID: %d %s\n", i, tasks.get(i).toString());
                                 }
                                 System.out.println("Input period");
-                                System.out.println("Format of data dd.MM.yyyy HH:mm");
+                                System.out.println("Format of data: " + format);
                                 System.out.println("From:");
                                 LocalDateTime dataFrom = getCorrectData();
                                 System.out.println("To:");
