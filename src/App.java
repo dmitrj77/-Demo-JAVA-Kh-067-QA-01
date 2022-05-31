@@ -342,7 +342,15 @@ public class App {
 
     public static String getInputString() {
         Scanner scanner = new Scanner(System.in);
-        return isEmptyString(scanner.nextLine());
+        String input;
+        while (true) {
+            input = scanner.nextLine();
+            if (input.isEmpty()) {
+                System.out.println("Parameter can not be empty. Please try again");
+            } else {
+                return input;
+            }
+        }
     }
 
     public static void outputMenu(String[] menu) {
@@ -388,16 +396,4 @@ public class App {
         }
     }
 
-    private static String isEmptyString(String string) {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            boolean isStringEmpty = string.isEmpty();
-            if (isStringEmpty) {
-                System.out.println("Parameter can not be empty. Please try again");
-                string = scanner.nextLine();
-            } else {
-                return string;
-            }
-        }
-    }
 }
