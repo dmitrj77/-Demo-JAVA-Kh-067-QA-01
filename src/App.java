@@ -273,17 +273,23 @@ public class App {
                                 System.out.println("From:");
                                 LocalDateTime dataFrom = getCorrectData();
                                 System.out.println("To:");
+                                List<Task> tasksToDelete = new ArrayList<>();
                                 LocalDateTime dataTo = getCorrectData();
                                 for (int i = 0; i < tasks.size(); i++) {
-                                    if ((tasks.get(i).getLocalDateTime().isEqual(dataFrom)) ||
-                                            (tasks.get(i).getLocalDateTime().isEqual(dataTo)) ||
-                                            ((tasks.get(i).getLocalDateTime().isAfter(dataFrom)) && (tasks.get(i).getLocalDateTime().isBefore(dataTo)))) {
-                                        deletedTasks.add(tasks.get(i));
-                                        tasks.remove(tasks.get(i));
-                                        writeTasks(deletedFile, deletedTasks);
-                                        writeTasks(taskFile, tasks);
+                                    boolean isTimeRange = tasks.get(i).getLocalDateTime().isEqual(dataFrom) ||
+                                            tasks.get(i).getLocalDateTime().isEqual(dataTo) ||
+                                            (tasks.get(i).getLocalDateTime().isAfter(dataFrom) && tasks.get(i).getLocalDateTime().isBefore(dataTo));
+                                    if (isTimeRange) {
+                                        tasksToDelete.add(tasks.get(i));
                                     }
                                 }
+                                for (Task task : tasksToDelete) {
+                                    if (tasks.remove(task)) {
+                                        deletedTasks.add(task);
+                                    }
+                                }
+                                writeTasks(deletedFile, deletedTasks);
+                                writeTasks(taskFile, tasks);
                                 System.out.println("You have successfully deleted tasks");
                                 String[] menu = new String[]{"Choose from the menus bellow", "Menu Delete", "Main Menu"};
                                 outputMenu(menu);
@@ -323,9 +329,9 @@ public class App {
             } else {
                 userChoice = scanner.nextInt();
                 if (userChoice < 0) {
-                    System.out.println("You entered an negative number");
+                    System.out.println("You entered an negative number. Please try again");
                 } else if (userChoice > maxChoice) {
-                    System.out.println("You entered an incorrect number");
+                    System.out.println("You entered an incorrect number. Please try again");
                 }
             }
 

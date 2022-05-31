@@ -20,8 +20,7 @@ public class TaskCreator {
 
     public static Task addTaskByPattern() {
         while (true) {
-            System.out.println("Enter title, date (in format " + format + ") and description using delimiter " +
-                    "';' or enter 0 to cancel");
+            System.out.println("Enter title, date (in format " + format + ") and description using delimiter ';'");
             String pattern = App.getInputString();
             if (isStringValid(pattern)) {
                 return new Task(pattern);
@@ -43,4 +42,5 @@ public class TaskCreator {
         }
         return true;
     }
+
 }
